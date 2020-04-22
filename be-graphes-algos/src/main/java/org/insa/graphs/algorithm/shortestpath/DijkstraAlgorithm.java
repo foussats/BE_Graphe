@@ -3,6 +3,7 @@ package org.insa.graphs.algorithm.shortestpath;
 import java.util.Arrays;
 import java.util.Collections;
 
+
 import org.insa.graphs.algorithm.AbstractSolution.Status;
 import org.insa.graphs.algorithm.utils.ElementNotFoundException;
 import org.insa.graphs.algorithm.utils.BinaryHeap;
@@ -39,7 +40,7 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
      // Initialize heap
         BinaryHeap<Label> tas = new BinaryHeap<Label>();
         tas.insert(labels[sommet]);
-        
+        ;
        
      // Notify observers about the first event (origin processed).
         notifyOriginProcessed(data.getOrigin());
@@ -50,12 +51,18 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         	Label x = tas.deleteMin();
         	x.setConnu(true);
         	Node node = graph.getNodes().get(x.sommetCourant());
+        	notifyNodeMarked(node);
+        	int nbSuc = 0;
         	for (Arc arc : node.getSuccessors()) {
+        		
         		int numLabel = arc.getDestination().getId();
         		if(labels[numLabel].inconnu() && data.isAllowed(arc)) {
-        			update(tas, labels[numLabel], x, arc);     			
+        			update(tas, labels[numLabel], x, arc, data);    
         		}
+        		nbSuc++;
+        		 System.out.println("Nombre successeurs explorés depuis la node " + node.getId()+ " : " +  nbSuc + "\n");
         	}
+        	System.out.println("Nombre successeurs théoriques de la node " + node.getId() + " : " + node.getNumberOfSuccessors());
         }
         
         ShortestPathSolution solution;
@@ -90,9 +97,9 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
 
 
 
-public void update( BinaryHeap<Label> heap, Label y, Label x, Arc pere) {
+public void update( BinaryHeap<Label> heap, Label y, Label x, Arc pere, ShortestPathData data) {
 	double old_cost = y.getCost();
-	double new_cost = x.getCost() + pere.getLength();
+	double new_cost = x.getCost() + data.getCost(pere);
 	if(old_cost>new_cost) {
 		try {
 			heap.remove(y);

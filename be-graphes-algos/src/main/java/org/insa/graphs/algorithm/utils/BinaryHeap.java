@@ -223,4 +223,13 @@ public class BinaryHeap<E extends Comparable<E>> implements PriorityQueue<E> {
         return BinaryHeapFormatter.toStringTree(this, 8);
     }
 
+   /* public boolean isValid(int index) {
+    	boolean valid = true;
+    	int indexLeft = indexLeft(index);
+    	int indexRight = indexLeft + 1;
+    	if ()
+    	
+    	return valid;
+    }*/
+    
 }
