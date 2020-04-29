@@ -27,12 +27,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         
         
         int nbNodes = graph.size();
-        
         // Initialize array of labels.
         Label[] labels = new Label[nbNodes];
         for (int i = 0; i<nbNodes; i++) {
         	labels[i] = new Label(i);
         }
+        return Dijkstra(labels, graph, data);
+    }
+        		
+        			
+    protected ShortestPathSolution Dijkstra(Label[] labels, Graph graph, ShortestPathData data) {
         int sommet = data.getOrigin().getId();
         int destination = data.getDestination().getId();
         labels[sommet].setCost(0);    
@@ -89,12 +93,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
             // Create the final solution.
             solution = new ShortestPathSolution(data, Status.OPTIMAL, new Path(graph, arcs));
         }
+        
+        // Verify the path is valid
+        if (solution.getPath().isValid()){
+        	System.out.println("Le Path est valide\n");
+        }
 
         
         return solution;
+        
     }
-
-
 
 
 public void update( BinaryHeap<Label> heap, Label y, Label x, Arc pere, ShortestPathData data) {
