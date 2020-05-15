@@ -18,7 +18,21 @@ public class AStarAlgorithm extends DijkstraAlgorithm {
         Label[] labels = new Label[nbNodes];
         for (int i = 0; i<nbNodes; i++) {
         	if (this.data.getMode() == AbstractInputData.Mode.TIME) {
-        		double h = (graph.get(i).getPoint().distanceTo(data.getDestination().getPoint())) / this.data.getMaximumSpeed();
+        		int vitesse_graph_max = graph.getGraphInformation().getMaximumSpeed();
+        		int vitesseDataMax = this.data.getMaximumSpeed();
+        		int vitesse;
+        		if (vitesseDataMax == -1) {
+        			vitesse = vitesse_graph_max;
+        		}else if(vitesse_graph_max == -1) {
+        			vitesse = vitesseDataMax;
+        		}else if(vitesseDataMax == -1 && vitesse_graph_max == -1) {
+        			vitesse = 130;
+        		}else if (vitesseDataMax<vitesse_graph_max) {
+        			vitesse = vitesseDataMax;        			
+        		}else {
+        			vitesse = vitesse_graph_max;
+        		}	
+        		double h = ((graph.getNodes().get(i).getPoint().distanceTo(data.getDestination().getPoint())) / (double)vitesse)*3.6;
         		labels[i] = new LabelStar(i, h);
         	}else {
         		double h = graph.get(i).getPoint().distanceTo(data.getDestination().getPoint());

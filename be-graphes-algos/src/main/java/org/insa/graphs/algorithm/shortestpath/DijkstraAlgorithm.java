@@ -61,14 +61,16 @@ public class DijkstraAlgorithm extends ShortestPathAlgorithm {
         		
         		int numLabel = arc.getDestination().getId();
         		if(labels[numLabel].inconnu() && data.isAllowed(arc)) {
-        			update(tas, labels[numLabel], x, arc, data);    
+        			update(tas, labels[numLabel], x, arc, data);  
+        			
         		}
+        		System.out.println("Cout label : " + labels[numLabel].getCost()+"\n");	
         		nbSuc++;
-        		 System.out.println("Nombre successeurs explorés depuis la node " + node.getId()+ " : " +  nbSuc + "\n");
+        		System.out.println("Nombre successeurs explorés depuis la node " + node.getId()+ " : " +  nbSuc + "\n");
+        		System.out.println("Le tas : est valide : " + tas.isValid());
         	}
         	System.out.println("Nombre successeurs théoriques de la node " + node.getId() + " : " + node.getNumberOfSuccessors());
         }
-        
         ShortestPathSolution solution;
         
         if (labels[destination].getPere() == null) {
